@@ -13,8 +13,8 @@ contract Crowdfluence {
     uint length = projects.length;
     uint[] memory ids = new uint[](length);
     address[] memory owners = new address[](length);
-    bytes32[][4] memory titles = new bytes32[][4](length);
-    bytes32[][4] memory homepages = new bytes32[][4](length);
+    bytes32[] memory titles = new bytes32[](length);
+    bytes32[] memory homepages = new bytes32[](length);
 
     for (uint i = 0; i < length; i++) {
       Project storage project = projects[i];
