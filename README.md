@@ -1,6 +1,6 @@
 # Crowdfluence
 
-Crowd readme development
+Crowd driven development
 
 ```
 $ npm install
