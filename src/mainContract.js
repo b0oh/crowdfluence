@@ -15,12 +15,6 @@ export default function contract() {
   return _contract;
 };
 
-export function createProject(account, title, homepage) {
-  return contract().methods.createProject(title, homepage).send({
-    from: account
-  });
-};
-
 export function getProjects(account) {
   return contract()
     .methods.getProjects()
@@ -28,11 +22,30 @@ export function getProjects(account) {
     .then(processProjects);
 };
 
+export function createProject(account, title, url) {
+  return contract().methods.createProject(title, url).send({
+    from: account
+  });
+};
+
+export function getRequests(account, projectId) {
+  return contract()
+    .methods.getRequests(projectId)
+    .call({ from: account })
+    .then(processRequests);
+};
+
+export function createRequest(account, projectId, title, url) {
+  return contract().methods.createRequest(projectId, title, url).send({
+    from: account
+  });
+};
+
 export function processProjects(json) {
   let ids = json[0];
   let owners = json[1];
   let titles = json[2];
-  let homepages = json[3];
+  let urls = json[3];
 
   let projects = [];
 
@@ -41,9 +54,27 @@ export function processProjects(json) {
       id: id,
       owner: owners[id],
       title: unpack(titles[id]),
-      homepage: unpack(homepages[id])
+      url: unpack(urls[id])
     });
   }
 
   return projects;
+};
+
+export function processRequests(json) {
+  let ids = json[0];
+  let titles = json[1];
+  let urls = json[2];
+
+  let requests = [];
+
+  for (let id in ids) {
+    requests.push({
+      id: id,
+      title: unpack(titles[id]),
+      url: unpack(urls[id])
+    });
+  }
+
+  return requests;
 };

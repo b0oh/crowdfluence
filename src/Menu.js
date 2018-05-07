@@ -1,18 +1,10 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-class MainMenu extends Component {
-  render() {
-    return (
-      <div>Menu</div>
-    );
-  }
-}
-
-function mapStateToProps(state) {
-  return {
-    web3: state.web3
-  };
-}
-
-export default connect(mapStateToProps)(MainMenu);
+export default () => {
+  return (
+    <header>
+      <Link to="/">Projects</Link>
+    </header>
+  );
+};

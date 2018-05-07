@@ -1,7 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import Layout from './Layout';
+import { withRouter } from 'react-router';
+import { Route, Switch } from 'react-router-dom';
+import NoMatch from './NoMatch';
+import Menu from './Menu';
 import Projects from './Projects';
+import Requests from './Requests';
 import { provideWeb3 } from './actions/web3';
 
 class App extends Component {
@@ -10,15 +14,21 @@ class App extends Component {
   }
 
   render() {
-    return (
-      <Layout>
-        {this.props.web3.provided ? (
-          <Projects />
-        ) : (
-          <div>Please use MetaMask, Mist, Cipher</div>
-        )}
-      </Layout>
-    );
+    return this.props.web3.provided ? (
+        <Fragment>
+          <Menu />
+
+          <main>
+            <Switch>
+              <Route exact path="/" component={Projects} />
+              <Route path="/projects/:projectId" component={Requests} />
+              <Route component={NoMatch} />
+            </Switch>
+          </main>
+        </Fragment>
+      ) : (
+        <div>Please use MetaMask, Mist, Cipher</div>
+      );
   }
 }
 
@@ -28,4 +38,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(App);
+export default withRouter(connect(mapStateToProps)(App));

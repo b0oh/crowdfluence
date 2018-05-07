@@ -1,15 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-export default class extends Component {
-  render() {
-    const { project } = this.props;
-
-    return (
-      <div>
-        <hr />
-        {project.title}<br />
-        {project.homepage}
-      </div>
-    );
-  }
+export default ({ project }) => {
+  return (
+    <div>
+      <hr />
+      <Link to={`/projects/${project.id}`}>{project.title} ({project.url})</Link>
+    </div>
+  );
 };

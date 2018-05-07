@@ -1,14 +1,25 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { createProject } from './actions/projects';
+import { fetchProjects, createProject } from './actions/projects';
 import Project from './Project';
 
 class Projects extends Component {
+  componentWillMount() {
+    const { dispatch, account, loaded } = this.props;
+
+    if (!loaded) {
+      dispatch(fetchProjects(account));
+    }
+  }
+
   render() {
     const { projects } = this.props;
 
     return (
       <div>
+        {projects.map(project => <Project key={project.id} project={project} />)}
+
+        <hr />
         <form onSubmit={this.onCreate}>
           Create project
           <div>
@@ -17,25 +28,24 @@ class Projects extends Component {
             </label>
           </div>
           <div>
-            <label>Homepage
-              <input type='text' name='homepage' onChange={this.onChange} />
+            <label>Url
+              <input type='text' name='url' onChange={this.onChange} />
             </label>
           </div>
           <div>
             <input type='submit' value='Create' />
           </div>
         </form>
-        {projects.map(project => <Project key={project.id} project={project} />)}
       </div>
     );
   }
 
   onCreate = (event) => {
     event.preventDefault();
-    const { account } = this.props;
-    const { title, homepage } = this.state;
+    const { dispatch, account } = this.props;
+    const { title, url } = this.state;
 
-    this.props.dispatch(createProject(account, title, homepage));
+    dispatch(createProject(account, title, url));
   };
 
   onChange = (event) => {
@@ -52,6 +62,7 @@ class Projects extends Component {
 function mapStateToProps(state) {
   return {
     account: state.web3.account,
+    loaded: state.projects.loaded,
     projects: state.projects.projects
   };
 }

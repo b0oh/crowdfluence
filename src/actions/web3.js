@@ -1,13 +1,10 @@
 import web3 from '../web3';
-import { fetchProjects } from './projects';
 
 export const WEB3_PROVIDED = 'WEB3_PROVIDED';
 export const WEB3_ACCOUNT = 'WEB3_ACCOUNT';
 
 function accountChanged(account) {
   return dispatch => {
-    dispatch(fetchProjects(account));
-
     return dispatch({
       type: WEB3_ACCOUNT,
       account: account

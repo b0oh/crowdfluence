@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { routerReducer } from 'react-router-redux';
 import { WEB3_PROVIDED, WEB3_ACCOUNT } from './actions/web3';
 import { PROJECTS_RECEIVED } from './actions/projects';
 
@@ -25,7 +26,8 @@ function web3(state = web3InitialState, action) {
 }
 
 const projectsInitialState = {
-  projects: []
+  projects: [],
+  loaded: false
 };
 
 function projects(state = projectsInitialState, action) {
@@ -33,7 +35,8 @@ function projects(state = projectsInitialState, action) {
     case PROJECTS_RECEIVED:
       return {
         ...state,
-        projects: action.projects
+        projects: action.projects,
+        loaded: true
       };
     default:
       return state;
@@ -42,5 +45,6 @@ function projects(state = projectsInitialState, action) {
 
 export default combineReducers({
   web3,
-  projects
+  projects,
+  routing: routerReducer
 });
