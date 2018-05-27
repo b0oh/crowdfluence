@@ -5,10 +5,19 @@ import Project from './Project';
 
 class Projects extends Component {
   componentWillMount() {
-    const { dispatch, account, loaded } = this.props;
+    //const { dispatch, network, account, loaded } = this.props;
 
-    if (!loaded) {
-      dispatch(fetchProjects(account));
+    //if (!loaded && network) {
+    //  dispatch(fetchProjects(network, account));
+    //}
+  }
+
+  componentWillReceiveProps({ network }) {
+    if (network) {
+      const { dispatch, account, loaded } = this.props;
+      if (!loaded) {
+        dispatch(fetchProjects(network, account));
+      }
     }
   }
 
@@ -42,10 +51,10 @@ class Projects extends Component {
 
   onCreate = (event) => {
     event.preventDefault();
-    const { dispatch, account } = this.props;
+    const { dispatch, network, account } = this.props;
     const { title, url } = this.state;
 
-    dispatch(createProject(account, title, url));
+    dispatch(createProject(network, account, title, url));
   };
 
   onChange = (event) => {
@@ -61,6 +70,7 @@ class Projects extends Component {
 
 function mapStateToProps(state) {
   return {
+    network: state.web3.network,
     account: state.web3.account,
     loaded: state.projects.loaded,
     projects: state.projects.projects

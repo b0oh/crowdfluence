@@ -11,23 +11,21 @@ function createProjectRequested() {
 }
 
 function receiveProjects(projects) {
-  console.log('PROJECTS', projects);
-
   return {
     type: PROJECTS_RECEIVED,
     projects: projects
   };
 }
 
-export function createProject(account, title, homepage) {
+export function createProject(network, account, title, homepage) {
   return dispatch => {
-    return _createProject(account, title, homepage).then(() => dispatch(createProjectRequested()));
+    return _createProject(network, account, title, homepage).then(() => dispatch(createProjectRequested()));
   };
 };
 
-export function fetchProjects(account) {
+export function fetchProjects(network, account) {
   return dispatch => {
-    return getProjects(account)
+    return getProjects(network, account)
       .then(projects => dispatch(receiveProjects(projects)));
   };
 };

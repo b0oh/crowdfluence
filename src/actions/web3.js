@@ -3,25 +3,27 @@ import web3 from '../web3';
 export const WEB3_PROVIDED = 'WEB3_PROVIDED';
 export const WEB3_ACCOUNT = 'WEB3_ACCOUNT';
 
-function accountChanged(account) {
-  return dispatch => {
-    return dispatch({
-      type: WEB3_ACCOUNT,
-      account: account
-    });
+function accountChanged(account, network) {
+  return {
+    type: WEB3_ACCOUNT,
+    account: account,
+    network: network
   };
 }
 
-function checkAccount(oldAccount) {
+function checkAccount(oldAccount, oldNetwork) {
   return async dispatch => {
+
     const accounts = await web3.eth.getAccounts();
     const account = accounts[0];
+    const network = await web3.eth.net.getNetworkType();
 
-    if (oldAccount !== account) {
-      dispatch(accountChanged(account));
+
+    if (oldAccount !== account || oldNetwork !== network) {
+      dispatch(accountChanged(account, network));
     }
 
-    setTimeout(() => { dispatch(checkAccount(account)) }, 5000);
+    setTimeout(() => { dispatch(checkAccount(account, network)) }, 5000);
   }
 }
 

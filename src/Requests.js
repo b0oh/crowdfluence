@@ -15,19 +15,31 @@ class Requests extends Component {
   }
 
   componentWillMount() {
-    const { dispatch, account, projects, match } = this.props;
-    if (projects.loaded) {
-      this.fetchRequests(projects.projects, match.params.projectId);
-    }
-    else {
-      dispatch(fetchProjects(account));
+    this.actOnProjects(this.props.projects);
+  }
+
+  componentWillReceiveProps({ network, projects }) {
+    this.actOnNetwork(network);
+    this.actOnProjects(projects);
+  }
+
+  actOnNetwork(network) {
+    if (network) {
+      const { dispatch, account, projects } = this.props;
+      if (projects.loaded) {
+         this.fetchRequests(projects.projects);
+      }
+      else {
+        dispatch(fetchProjects(network, account));
+      }
     }
   }
 
-  componentWillReceiveProps({ projects }) {
-    const { loaded } = this.state;
-    if (!loaded && projects && projects.loaded) {
-      this.fetchRequests(projects.projects, this.props.match.params.projectId);
+  actOnProjects(projects) {
+    if (projects) {
+      if (!this.state.loaded && projects.loaded) {
+        this.fetchRequests(projects.projects);
+      }
     }
   }
 
@@ -69,11 +81,12 @@ class Requests extends Component {
     }
   }
 
-  fetchRequests = (projects, projectId) => {
-    const { account } = this.props;
+  fetchRequests = (projects) => {
+    const { network, account, match } = this.props;
+    const projectId = match.params.projectId;
     const project = findProject(projects, projectId);
     if (project) {
-      getRequests(account, projectId).then(requests => {
+      getRequests(network, account, projectId).then(requests => {
         this.setState({ loaded: true, project: project, requests: requests });
       });
     }
@@ -85,10 +98,10 @@ class Requests extends Component {
   onCreate = (event) => {
     event.preventDefault();
 
-    const { account } = this.props;
+    const { network, account } = this.props;
     const { project, title, url } = this.state;
 
-    createRequest(account, project.id, title, url);
+    createRequest(network, account, project.id, title, url);
   };
 
 
@@ -105,6 +118,7 @@ class Requests extends Component {
 
 function mapStateToProps(state) {
   return {
+    network: state.web3.network,
     account: state.web3.account,
     projects: state.projects
   };

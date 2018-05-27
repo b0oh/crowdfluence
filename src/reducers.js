@@ -5,7 +5,8 @@ import { PROJECTS_RECEIVED } from './actions/projects';
 
 const web3InitialState = {
   provided: false,
-  account: ''
+  account: '',
+  network: ''
 };
 
 function web3(state = web3InitialState, action) {
@@ -18,7 +19,8 @@ function web3(state = web3InitialState, action) {
     case WEB3_ACCOUNT:
       return {
         ...state,
-        account: action.account
+        account: action.account,
+        network: action.network
       };
     default:
       return state;
