@@ -4,6 +4,7 @@
   "repository": "maschisma/crowdfluence",
   "license": "ISC",
   "dependencies": {
+    "firebase-tools": "^3.18.4",
     "fs-extra": "^5.0.0",
     "ganache-cli": "^6.0.3",
     "react": "^16.2.0",
