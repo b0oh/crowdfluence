@@ -15,20 +15,20 @@ class App extends Component {
 
   render() {
     return this.props.web3.provided ? (
-        <Fragment>
-          <Menu />
+      <Fragment>
+        <Menu />
 
-          <main>
-            <Switch>
-              <Route exact path="/" component={Projects} />
-              <Route path="/projects/:projectId" component={Requests} />
-              <Route component={NoMatch} />
-            </Switch>
-          </main>
-        </Fragment>
-      ) : (
-        <div>Please use MetaMask, Mist, Cipher</div>
-      );
+        <main>
+          <Switch>
+            <Route exact path="/" component={Projects} />
+            <Route path="/projects/:projectId" component={Requests} />
+            <Route component={NoMatch} />
+          </Switch>
+        </main>
+      </Fragment>
+    ) : (
+      <div>Please use MetaMask, Mist, Cipher</div>
+    );
   }
 }
 
