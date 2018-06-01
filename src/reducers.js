@@ -6,7 +6,7 @@ import { PROJECTS_RECEIVED } from './actions/projects';
 const web3InitialState = {
   provided: false,
   account: '',
-  network: ''
+  network: '',
 };
 
 function web3(state = web3InitialState, action) {
@@ -14,13 +14,13 @@ function web3(state = web3InitialState, action) {
     case WEB3_PROVIDED:
       return {
         ...state,
-        provided: action.status
+        provided: action.status,
       };
     case WEB3_ACCOUNT:
       return {
         ...state,
         account: action.account,
-        network: action.network
+        network: action.network,
       };
     default:
       return state;
@@ -29,7 +29,7 @@ function web3(state = web3InitialState, action) {
 
 const projectsInitialState = {
   projects: [],
-  loaded: false
+  loaded: false,
 };
 
 function projects(state = projectsInitialState, action) {
@@ -38,15 +38,15 @@ function projects(state = projectsInitialState, action) {
       return {
         ...state,
         projects: action.projects,
-        loaded: true
+        loaded: true,
       };
     default:
       return state;
   }
-};
+}
 
 export default combineReducers({
   web3,
   projects,
-  routing: routerReducer
+  routing: routerReducer,
 });
