@@ -1,4 +1,4 @@
-export function unpack(hex) {
+export default function unpack(hex) {
   const bytes = [];
   for (let i = 2; i < 66; i += 2) {
     const char = parseInt(hex.substr(i, 2), 16);
@@ -7,5 +7,5 @@ export function unpack(hex) {
     }
     bytes.push(char);
   }
-  return (new Buffer(bytes)).toString('utf8');
+  return (Buffer.from(bytes)).toString('utf8');
 }

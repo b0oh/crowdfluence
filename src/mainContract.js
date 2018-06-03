@@ -8,42 +8,16 @@ const addresses = {
   private: '0x33e40f6934560aE3e9d33A688Cb6c89FFf0b9CC2',
 };
 
-const _contracts = {};
+const contracts = {};
 
 export default function contract(network) {
-  if (!_contracts[network]) {
-    _contracts[network] = new web3.eth.Contract(
+  if (!contracts[network]) {
+    contracts[network] = new web3.eth.Contract(
       JSON.parse(compiled.interface),
       addresses[network],
     );
   }
-  return _contracts[network];
-}
-
-export function getProjects(network, account) {
-  return contract(network)
-    .methods.getProjects()
-    .call({ from: account })
-    .then(processProjects);
-}
-
-export function createProject(network, account, title, url) {
-  return contract(network).methods.createProject(title, url).send({
-    from: account,
-  });
-}
-
-export function getRequests(network, account, projectId) {
-  return contract(network)
-    .methods.getRequests(projectId)
-    .call({ from: account })
-    .then(processRequests);
-}
-
-export function createRequest(network, account, projectId, title, url) {
-  return contract(network).methods.createRequest(projectId, title, url).send({
-    from: account,
-  });
+  return contracts[network];
 }
 
 export function processProjects(json) {
@@ -82,4 +56,30 @@ export function processRequests(json) {
   }
 
   return requests;
+}
+
+export function getProjects(network, account) {
+  return contract(network)
+    .methods.getProjects()
+    .call({ from: account })
+    .then(processProjects);
+}
+
+export function createProject(network, account, title, url) {
+  return contract(network).methods.createProject(title, url).send({
+    from: account,
+  });
+}
+
+export function getRequests(network, account, projectId) {
+  return contract(network)
+    .methods.getRequests(projectId)
+    .call({ from: account })
+    .then(processRequests);
+}
+
+export function createRequest(network, account, projectId, title, url) {
+  return contract(network).methods.createRequest(projectId, title, url).send({
+    from: account,
+  });
 }

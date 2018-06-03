@@ -19,7 +19,6 @@ $ npm start
 $ PATH=$(npm bin):$PATH firebase deploy
 ```
 
-
 ### Develop
 
 `npm run lint` - run lint
