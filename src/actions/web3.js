@@ -6,14 +6,13 @@ export const WEB3_ACCOUNT = 'WEB3_ACCOUNT';
 function accountChanged(account, network) {
   return {
     type: WEB3_ACCOUNT,
-    account: account,
-    network: network
+    account,
+    network,
   };
 }
 
 function checkAccount(oldAccount, oldNetwork) {
-  return async dispatch => {
-
+  return async (dispatch) => {
     const accounts = await web3.eth.getAccounts();
     const account = accounts[0];
     const network = await web3.eth.net.getNetworkType();
@@ -23,12 +22,16 @@ function checkAccount(oldAccount, oldNetwork) {
       dispatch(accountChanged(account, network));
     }
 
-    setTimeout(() => { dispatch(checkAccount(account, network)) }, 5000);
-  }
+    setTimeout(() => { dispatch(checkAccount(account, network)); }, 5000);
+  };
+}
+
+function web3Provided() {
+  return typeof window.web3 !== 'undefined';
 }
 
 export function provideWeb3() {
-  return dispatch => {
+  return (dispatch) => {
     const provided = web3Provided();
 
     if (provided) {
@@ -37,11 +40,7 @@ export function provideWeb3() {
 
     return dispatch({
       type: WEB3_PROVIDED,
-      status: provided
+      status: provided,
     });
   };
-}
-
-function web3Provided() {
-  return typeof window.web3 !== 'undefined';
 }
